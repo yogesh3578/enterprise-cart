@@ -31,6 +31,13 @@ app.use(
   })
 );
 
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Next.js frontend you'll replace this with your production frontend URL.
+    credentials: true,
+  })
+);
+
 // Register routes FIRST
 app.use("/api/v1", routes);
 
