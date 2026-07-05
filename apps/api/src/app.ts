@@ -6,9 +6,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import routes from "./routes";
-import { errorHandler } from "./core/middleware/errorHandler";
 import { notFound } from "./core/middleware/common/notFound";
 import { logger } from "./core/logger/logger";
+import { errorHandler } from "./core/middleware/common/errorHandler";
 
 const app = express();
 

@@ -7,5 +7,5 @@ export interface ApiResponse<T = unknown> {
 
   errors?: unknown;
 
-  timestamp: string;
+  timestamp?: string;
 }

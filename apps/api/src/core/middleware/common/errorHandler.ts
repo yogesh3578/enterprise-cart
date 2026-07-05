@@ -1,18 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { ApiError } from "../errors/ApiError";
-import { logger } from "../logger/logger";
+
+import { AppError } from "../../../shared/errors/AppError";
+import { sendResponse } from "../../../shared/utils/apiResponse";
+import { logger } from "../../logger/logger";
 
 export const errorHandler = (
   err: Error,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   logger.error(err);
 
-  if (err instanceof ApiError) {
-    res.status(err.statusCode).json({
+  if (err instanceof AppError) {
+    sendResponse(res, err.statusCode, {
       success: false,
       message: err.message,
       errors: err.errors,
@@ -21,7 +23,7 @@ export const errorHandler = (
     return;
   }
 
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+  sendResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, {
     success: false,
     message: "Internal Server Error",
   });

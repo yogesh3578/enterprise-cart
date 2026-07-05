@@ -1,15 +1,18 @@
 import { Router } from "express";
-import { ApiResponse } from "../shared/utils/ApiResponse";
+import { StatusCodes } from "http-status-codes";
+
+import { sendResponse } from "../shared/utils/apiResponse";
 
 const router = Router();
 
-router.get("/", (_, res) => {
-  res.status(200).json(
-    new ApiResponse(200, {
+router.get("/", (_req, res) => {
+  sendResponse(res, StatusCodes.OK, {
+    success: true,
+    message: "API is healthy",
+    data: {
       status: "UP",
-      timestamp: new Date().toISOString(),
-    }, "API is healthy")
-  );
+    },
+  });
 });
 
 export default router;
