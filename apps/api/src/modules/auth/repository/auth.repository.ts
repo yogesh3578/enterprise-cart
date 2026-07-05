@@ -9,7 +9,7 @@ class AuthRepository extends BaseRepository<IUser> {
   }
 
   async findByEmail(email: string) {
-    return this.model.findOne({ email }).exec();
+    return this.findOne({ email });
   }
 }
 

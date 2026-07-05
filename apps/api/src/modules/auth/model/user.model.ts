@@ -69,9 +69,6 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// Useful indexes
-userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ isDeleted: 1 });
 
 export default mongoose.models.User ||
   mongoose.model<IUser>("User", userSchema);

@@ -8,6 +8,13 @@ import { HttpStatus } from "../../../shared/constants/httpStatus";
 import { Messages } from "../../../shared/constants/messages";
 
 import { hashPassword } from "../../../shared/utils/hashPassword";
+import { UserMapper } from "../mapper/user.mapper";
+
+import { comparePassword } from "../../../shared/utils/comparePassword";
+import { generateAccessToken, generateRefreshToken } from "../../../shared/utils/jwt";
+import { UnauthorizedError } from "../../../shared/errors/UnauthorizedError";
+import { LoginDto } from "../dto/login.dto";
+
 
 class AuthService {
   async register(data: RegisterDto) {
@@ -22,12 +29,51 @@ class AuthService {
     }
 
     const hashedPassword = await hashPassword(data.password);
-
-    return authRepository.create({
+    const user = await authRepository.create({
       ...data,
       password: hashedPassword,
     });
+
+    return UserMapper.toResponse(user);
   }
+
+  async login(dto: LoginDto) {
+    const user = await authRepository.findByEmail(dto.email);
+
+    if (!user) {
+      throw new UnauthorizedError("Invalid email or password");
+    }
+
+    const isPasswordValid = await comparePassword(
+      dto.password,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedError("Invalid email or password");
+    }
+    const payload = {
+      userId: user.id,
+      role: user.role,
+    };
+    const accessToken = generateAccessToken(payload);
+
+    const refreshToken = generateRefreshToken(payload);
+
+    await authRepository.update(
+      { _id: user._id },
+      {
+        refreshToken,
+      }
+    );
+
+    return {
+      accessToken,
+      refreshToken,
+      user: UserMapper.toResponse(user),
+    };
+  }
+
 }
 
 export default new AuthService();

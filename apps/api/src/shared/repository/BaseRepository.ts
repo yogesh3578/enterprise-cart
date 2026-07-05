@@ -1,26 +1,31 @@
 import {
   FilterQuery,
+  HydratedDocument,
   Model,
-  UpdateQuery,
   QueryOptions,
+  UpdateQuery,
 } from "mongoose";
 
 export abstract class BaseRepository<T> {
   constructor(protected readonly model: Model<T>) {}
 
-  async create(data: Partial<T>): Promise<T> {
+  async create(data: Partial<T>): Promise<HydratedDocument<T>> {
     return this.model.create(data);
   }
 
-  async findById(id: string): Promise<T | null> {
+  async findById(id: string): Promise<HydratedDocument<T> | null> {
     return this.model.findById(id).exec();
   }
 
-  async findOne(filter: FilterQuery<T>): Promise<T | null> {
+  async findOne(
+    filter: FilterQuery<T>
+  ): Promise<HydratedDocument<T> | null> {
     return this.model.findOne(filter).exec();
   }
 
-  async find(filter: FilterQuery<T> = {}): Promise<T[]> {
+  async find(
+    filter: FilterQuery<T> = {}
+  ): Promise<HydratedDocument<T>[]> {
     return this.model.find(filter).exec();
   }
 
@@ -28,11 +33,13 @@ export abstract class BaseRepository<T> {
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
     options: QueryOptions = { new: true }
-  ): Promise<T | null> {
+  ): Promise<HydratedDocument<T> | null> {
     return this.model.findOneAndUpdate(filter, update, options).exec();
   }
 
-  async delete(filter: FilterQuery<T>): Promise<T | null> {
+  async delete(
+    filter: FilterQuery<T>
+  ): Promise<HydratedDocument<T> | null> {
     return this.model.findOneAndUpdate(
       filter,
       {
