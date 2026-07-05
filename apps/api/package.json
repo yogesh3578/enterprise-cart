@@ -9,24 +9,38 @@
     "format": "prettier --write src"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "express-rate-limit": "^8",
     "express-validator": "^7",
     "helmet": "^8.2.0",
     "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.4.0",
     "mongoose": "^8.24.1",
+    "morgan": "^1.11.0",
     "uuid": "^13",
     "winston": "^3.19.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/bcrypt": "^6",
+    "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1",
     "@types/cors": "^2",
     "@types/express": "^5",
     "@types/jsonwebtoken": "^9",
     "@types/morgan": "^1",
-    "@types/node": "^24"
+    "@types/node": "^24",
+    "eslint": "^9.39.4",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4",
+    "tsx": "^4.23.0",
+    "typescript-eslint": "^8.62.1"
   }
 }
