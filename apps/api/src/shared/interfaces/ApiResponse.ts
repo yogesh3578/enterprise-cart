@@ -1,3 +1,5 @@
+import { PaginationMeta } from "./PaginationMeta";
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
 
@@ -8,4 +10,6 @@ export interface ApiResponse<T = unknown> {
   errors?: unknown;
 
   timestamp?: string;
+    meta?: PaginationMeta;
+
 }

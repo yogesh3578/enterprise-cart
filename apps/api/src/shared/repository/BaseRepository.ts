@@ -3,11 +3,13 @@ import {
   HydratedDocument,
   Model,
   QueryOptions,
+  SortOrder,
   UpdateQuery,
 } from "mongoose";
+import { getPagination } from "../utils/pagination";
 
 export abstract class BaseRepository<T> {
-  constructor(protected readonly model: Model<T>) {}
+  constructor(protected readonly model: Model<T>) { }
 
   async create(data: Partial<T>): Promise<HydratedDocument<T>> {
     return this.model.create(data);
@@ -37,7 +39,7 @@ export abstract class BaseRepository<T> {
     return this.model.findOneAndUpdate(filter, update, options).exec();
   }
 
-  async delete(
+  async softDelete(
     filter: FilterQuery<T>
   ): Promise<HydratedDocument<T> | null> {
     return this.model.findOneAndUpdate(
@@ -51,4 +53,35 @@ export abstract class BaseRepository<T> {
       }
     ).exec();
   }
+
+  async findWithPagination(
+    filter: FilterQuery<T>,
+    page: number,
+    limit: number,
+    sort?: Record<string, SortOrder>
+  ) {
+    const { skip } = getPagination(page, limit);
+
+    const data = await this.model
+      .find(filter)
+      .sort(sort ?? { createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await this.model.countDocuments(filter);
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
+  async count(filter: FilterQuery<T> = {}) {
+    return this.model.countDocuments(filter);
+  }
+
+
 }
