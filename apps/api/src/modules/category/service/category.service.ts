@@ -154,7 +154,10 @@ class CategoryService {
       throw new NotFoundError("Category not found");
     }
 
-    const restored = await categoryRepository.restore(id);
+    const restored = await categoryRepository.restore({
+      _id: id,
+    });
+
 
     return CategoryMapper.toResponse(restored!);
   }

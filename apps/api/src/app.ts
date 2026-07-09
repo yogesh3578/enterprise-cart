@@ -12,6 +12,7 @@ import { logger } from "./core/logger/logger";
 import { notFound } from "./core/middleware/common/notFound";
 import { errorHandler } from "./core/middleware/common/errorHandler";
 import categoryRoutes from "./modules/category";
+import productRoutes from "./modules/product";
 
 const app = express();
 
@@ -45,6 +46,8 @@ app.use("/api/v1", routes);
 app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/categories", categoryRoutes);
+
+app.use("/api/v1/products", productRoutes);
 
 // 404 middleware AFTER all routes
 app.use(notFound);

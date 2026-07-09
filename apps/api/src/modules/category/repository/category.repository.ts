@@ -29,19 +29,6 @@ class CategoryRepository extends BaseRepository<ICategory> {
         });
     }
 
-    async restore(id: string) {
-        return this.model.findByIdAndUpdate(
-            id,
-            {
-                isDeleted: false,
-                deletedAt: null,
-            },
-            {
-                new: true,
-            }
-        );
-    }
-
 }
 
 export default new CategoryRepository();

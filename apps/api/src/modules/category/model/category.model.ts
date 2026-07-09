@@ -46,13 +46,6 @@ const categorySchema = new Schema<ICategory>(
     },
 );
 
-categorySchema.index({
-    name: 1,
-});
-
-categorySchema.index({
-    slug: 1,
-});
 
 categorySchema.index({
     isDeleted: 1,

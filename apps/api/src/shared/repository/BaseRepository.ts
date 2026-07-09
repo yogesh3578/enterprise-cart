@@ -83,5 +83,20 @@ export abstract class BaseRepository<T> {
     return this.model.countDocuments(filter);
   }
 
+  async restore(
+    filter: FilterQuery<T>
+  ): Promise<HydratedDocument<T> | null> {
+    return this.model.findOneAndUpdate(
+      filter,
+      {
+        isDeleted: false,
+        deletedAt: null,
+      },
+      {
+        new: true,
+      }
+    ).exec();
+  }
+
 
 }
